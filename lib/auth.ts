@@ -5,6 +5,7 @@ import { cookies } from 'next/headers'
 const JWT_SECRET = process.env.JWT_SECRET!
 const COOKIE_NAME = 'glm_admin_token'
 
+// ---- Password hashing using built-in Node.js crypto ----
 export async function hashPassword(password: string): Promise<string> {
   const salt = crypto.randomBytes(32)
   return new Promise((resolve, reject) => {
@@ -29,6 +30,7 @@ export async function verifyPassword(password: string, storedHash: string): Prom
   })
 }
 
+// ---- JWT ----
 export function generateToken(): string {
   return jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '7d' })
 }
@@ -37,8 +39,10 @@ export function verifyToken(token: string): boolean {
   try { jwt.verify(token, JWT_SECRET); return true } catch { return false }
 }
 
-export function setAdminCookie(token: string) {
-  cookies().set(COOKIE_NAME, token, {
+// ---- Cookies — async in Next.js 15 ----
+export async function setAdminCookie(token: string) {
+  const cookieStore = await cookies()
+  cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -47,16 +51,18 @@ export function setAdminCookie(token: string) {
   })
 }
 
-export function getAdminCookie(): string | undefined {
-  return cookies().get(COOKIE_NAME)?.value
+export async function getAdminCookie(): Promise<string | undefined> {
+  const cookieStore = await cookies()
+  return cookieStore.get(COOKIE_NAME)?.value
 }
 
-export function clearAdminCookie() {
-  cookies().delete(COOKIE_NAME)
+export async function clearAdminCookie() {
+  const cookieStore = await cookies()
+  cookieStore.delete(COOKIE_NAME)
 }
 
-export function isAdminAuthenticated(): boolean {
-  const token = getAdminCookie()
+export async function isAdminAuthenticated(): Promise<boolean> {
+  const token = await getAdminCookie()
   if (!token) return false
   return verifyToken(token)
 }
