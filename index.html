@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Good Life Medics</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --primary: #0a5c5c;
+    --primary-light: #0e8080;
+    --primary-pale: #e6f4f4;
+    --accent: #c8a96e;
+    --accent-light: #f5ecd8;
+    --dark: #0d1f1f;
+    --text: #1a2e2e;
+    --muted: #5a7070;
+    --border: #d0e4e4;
+    --white: #ffffff;
+    --bg: #f7fafa;
+    --success: #1a7a4a;
+    --success-bg: #e6f5ed;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #cfe0e0; color: var(--text); overflow-x: hidden; }
+
+  /* PAGE WRAP — just a centering shell, no bg */
+  .page-wrap {
+    max-width: 1260px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* SECTION CARD — each section is its own rounded card */
+  .section-card {
+    background: var(--bg);
+    margin: 1.2rem 1.2rem;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(10,92,92,0.10);
+  }
+  .section-card.white  { background: #ffffff; }
+  .section-card.pale   { background: var(--primary-pale); }
+  .section-card.dark   { background: var(--dark); }
+  .section-card.teal   { background: var(--primary); }
+
+  /* Nav card — special treatment */
+  .nav-card {
+    background: rgba(247,250,250,0.98);
+    margin: 1.2rem 1.2rem 0;
+    border-radius: 20px;
+    box-shadow: 0 2px 20px rgba(10,92,92,0.10);
+    position: sticky; top: 1rem; z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  /* CONTAINER */
+  .container {
+    max-width: 1160px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 2rem;
+  }
+
+  /* On mobile — remove side margins, no card border-radius */
+  @media (max-width: 900px) {
+    body { background: var(--bg); }
+    .section-card, .nav-card {
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .section-card + .section-card { border-top: 1px solid var(--border); }
+  }
+
+  /* NAV */
+  nav {
+    height: 70px;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1160px; margin: 0 auto; height: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon {
+    width: 38px; height: 38px; background: var(--primary); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 22px; height: 22px; fill: none; stroke: white; stroke-width: 2; }
+  .logo-text { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--primary); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-btn {
+    background: var(--primary); color: white; border: none; padding: 0.5rem 1.2rem;
+    border-radius: 8px; font-size: 0.88rem; font-weight: 500; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+    text-decoration: none; display: inline-block;
+  }
+  .nav-btn:hover { background: var(--primary-light); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-pale) 0%, var(--bg) 60%);
+    position: relative; overflow: hidden;
+  }
+  .hero-inner {
+    max-width: 1160px; margin: 0 auto; padding: 80px 2rem 80px;
+    display: flex; align-items: center; gap: 4rem;
+  }
+  .hero::before {
+    content: ''; position: absolute; right: -100px; top: -100px;
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(10,92,92,0.06) 0%, transparent 70%);
+  }
+  .hero-content { flex: 1; max-width: 560px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-light); color: #7a5c20; border: 1px solid #e8d4a8;
+    padding: 5px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 500; margin-bottom: 1.5rem;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 4vw, 3.2rem);
+    font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 1.2rem;
+  }
+  h1 em { color: var(--primary); font-style: normal; }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; max-width: 440px; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--primary); color: white; border: none; padding: 0.85rem 1.8rem;
+    border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: all 0.2s; text-decoration: none; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--primary); border: 1.5px solid var(--primary);
+    padding: 0.85rem 1.8rem; border-radius: 10px; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover { background: var(--primary-pale); }
+  .hero-visual {
+    flex: 0 0 420px; display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .hero-card {
+    background: white; border-radius: 20px; padding: 2rem;
+    border: 1px solid var(--border); width: 100%; max-width: 360px;
+    box-shadow: 0 20px 60px rgba(10,92,92,0.1);
+  }
+  .hero-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+  .avatar {
+    width: 52px; height: 52px; border-radius: 50%; background: var(--primary-pale);
+    border: 3px solid var(--primary); display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--primary); font-weight: 700;
+  }
+  .hero-card-name { font-weight: 600; color: var(--dark); font-size: 0.95rem; }
+  .hero-card-title { font-size: 0.8rem; color: var(--muted); }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-box {
+    background: var(--bg); border-radius: 12px; padding: 1rem; text-align: center;
+    border: 1px solid var(--border);
+  }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+  .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  .trust-bar {
+    display: flex; align-items: center; gap: 8px; margin-top: 1.2rem;
+    padding-top: 1.2rem; border-top: 1px solid var(--border);
+  }
+  .trust-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+  .trust-text { font-size: 0.8rem; color: var(--muted); }
+
+  /* STATS BAR */
+  .stats-bar {
+    padding: 2.5rem 0;
+  }
+  .stats-bar-inner {
+    max-width: 1160px; margin: 0 auto; padding: 0 2.5rem;
+    display: flex; justify-content: center; gap: 4rem; flex-wrap: wrap;
+  }
+  .stats-bar-item { text-align: center; }
+  .stats-bar-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: white; }
+  .stats-bar-label { font-size: 0.82rem; color: rgba(255,255,255,0.7); margin-top: 2px; }
+
+  /* SECTIONS */
+  section { padding: 4rem 0; }
+  .section-inner { max-width: 1160px; margin: 0 auto; padding: 0 2.5rem; }
+  .section-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--primary-pale); color: var(--primary);
+    padding: 5px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700; color: var(--dark); margin-bottom: 0.8rem;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; line-height: 1.7; max-width: 520px; }
+
+  /* ABOUT */
+  .about-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: center; margin-top: 3rem; }
+  .about-img-wrap {
+    background: var(--primary-pale); border-radius: 20px; aspect-ratio: 4/5;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+  }
+  .about-img-wrap svg { width: 120px; height: 120px; opacity: 0.3; }
+  .about-img-placeholder { text-align: center; color: var(--muted); }
+  .about-img-placeholder p { font-size: 0.85rem; margin-top: 0.5rem; }
+  .about-content p { color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; }
+  .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1.5rem; }
+  .badge {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: 8px; font-size: 0.82rem; color: var(--text); font-weight: 500;
+  }
+  .badge svg { width: 14px; height: 14px; stroke: var(--primary); fill: none; stroke-width: 2; }
+
+  /* EBOOKS */
+  .ebooks-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .ebook-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+  .ebook-card {
+    background: white; border-radius: 16px; border: 1px solid var(--border);
+    overflow: hidden; transition: all 0.25s; cursor: pointer;
+  }
+  .ebook-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(10,92,92,0.1); }
+  .ebook-cover {
+    aspect-ratio: 3/2; background: var(--primary-pale);
+    display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .ebook-cover svg { width: 64px; height: 64px; opacity: 0.25; }
+  .ebook-type-badge {
+    position: absolute; top: 12px; right: 12px;
+    padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600;
+  }
+  .free-badge { background: var(--success-bg); color: var(--success); }
+  .paid-badge { background: var(--accent-light); color: #7a5c20; }
+  .ebook-body { padding: 1.2rem; }
+  .ebook-title { font-weight: 600; color: var(--dark); margin-bottom: 0.4rem; font-size: 0.95rem; line-height: 1.4; }
+  .ebook-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .ebook-footer { display: flex; align-items: center; justify-content: space-between; }
+  .ebook-price { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+  .ebook-btn {
+    padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .ebook-btn-free { background: var(--primary); color: white; }
+  .ebook-btn-free:hover { background: var(--primary-light); }
+  .ebook-btn-paid { background: var(--accent); color: white; }
+  .ebook-btn-paid:hover { background: #b8953e; }
+
+  .empty-state {
+    grid-column: 1/-1; text-align: center; padding: 4rem 2rem;
+    background: white; border-radius: 16px; border: 1.5px dashed var(--border);
+  }
+  .empty-state svg { width: 56px; height: 56px; stroke: var(--border); fill: none; stroke-width: 1.5; margin-bottom: 1rem; }
+  .empty-state h3 { font-size: 1rem; color: var(--muted); font-weight: 500; }
+  .empty-state p { font-size: 0.85rem; color: var(--border); margin-top: 0.3rem; }
+
+  /* TESTIMONIALS */
+  .testimonials { }
+  .testimonials .section-title { color: white; }
+  .testimonials .section-tag { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+  .testimonials .section-sub { color: rgba(255,255,255,0.7); }
+  .testi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2.5rem; }
+  .testi-card {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px; padding: 1.5rem;
+  }
+  .stars { color: var(--accent); font-size: 1rem; margin-bottom: 0.8rem; }
+  .testi-text { color: rgba(255,255,255,0.85); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1rem; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 10px; }
+  .testi-avatar {
+    width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; color: white;
+  }
+  .testi-name { color: white; font-weight: 600; font-size: 0.88rem; }
+  .testi-loc { color: rgba(255,255,255,0.6); font-size: 0.78rem; }
+
+  /* NEWSLETTER */
+  .newsletter-wrap {
+    background: white; border-radius: 20px; border: 1px solid var(--border);
+    padding: 3rem; text-align: center; max-width: 560px; margin: 3rem auto 0;
+  }
+  .newsletter-icon {
+    width: 56px; height: 56px; background: var(--primary-pale); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem;
+  }
+  .newsletter-icon svg { width: 28px; height: 28px; stroke: var(--primary); fill: none; stroke-width: 2; }
+  .newsletter-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 0.5rem; }
+  .newsletter-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 1.5rem; }
+  .newsletter-form { display: flex; gap: 10px; max-width: 380px; margin: 0 auto; }
+  .newsletter-form input {
+    flex: 1; padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; color: var(--text); background: var(--bg);
+    outline: none;
+  }
+  .newsletter-form input:focus { border-color: var(--primary); }
+  .newsletter-form button {
+    background: var(--primary); color: white; border: none; padding: 0.7rem 1.2rem;
+    border-radius: 8px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; white-space: nowrap; transition: background 0.2s;
+  }
+  .newsletter-form button:hover { background: var(--primary-light); }
+
+  /* FOOTER */
+  footer {
+    background: var(--dark); color: rgba(255,255,255,0.7); padding: 3rem 0 2rem;
+    border-radius: 0 0 24px 24px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; margin-bottom: 2rem; }
+  .footer-brand { }
+  .footer-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+  .footer-logo-icon {
+    width: 34px; height: 34px; background: var(--primary); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .footer-logo-icon svg { width: 18px; height: 18px; fill: none; stroke: white; stroke-width: 2; }
+  .footer-logo-text { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: white; font-weight: 700; }
+  .footer-desc { font-size: 0.85rem; line-height: 1.7; max-width: 240px; }
+  .social-links { display: flex; gap: 10px; margin-top: 1.2rem; }
+  .social-btn {
+    width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .social-btn:hover { background: rgba(255,255,255,0.15); }
+  .social-btn svg { width: 16px; height: 16px; fill: none; stroke: rgba(255,255,255,0.7); stroke-width: 2; }
+  .footer-col h4 { color: white; font-weight: 600; margin-bottom: 1rem; font-size: 0.9rem; }
+  .footer-col a { display: block; color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; margin-bottom: 0.5rem; transition: color 0.2s; }
+  .footer-col a:hover { color: white; }
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; }
+  .footer-copy { font-size: 0.82rem; }
+  .footer-admin-link { font-size: 0.82rem; color: rgba(255,255,255,0.35); text-decoration: none; transition: color 0.2s; }
+  .footer-admin-link:hover { color: rgba(255,255,255,0.7); }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+    z-index: 200; align-items: center; justify-content: center; padding: 1rem;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: white; border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 440px;
+    position: relative; animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.97); } to { opacity: 1; transform: none; } }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem; background: var(--bg); border: 1px solid var(--border);
+    width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center; color: var(--muted);
+  }
+  .modal-icon {
+    width: 52px; height: 52px; background: var(--primary-pale); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 1.2rem;
+  }
+  .modal-icon svg { width: 26px; height: 26px; stroke: var(--primary); fill: none; stroke-width: 2; }
+  .modal-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--dark); margin-bottom: 0.4rem; }
+  .modal-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.5rem; }
+  .modal-ebook-name { font-weight: 600; color: var(--primary); }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.85rem; font-weight: 500; color: var(--text); margin-bottom: 6px; }
+  .form-group input {
+    width: 100%; padding: 0.75rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem; color: var(--text); background: var(--bg);
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus { border-color: var(--primary); background: white; }
+  .form-submit {
+    width: 100%; background: var(--primary); color: white; border: none;
+    padding: 0.85rem; border-radius: 10px; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; margin-top: 0.5rem;
+  }
+  .form-submit:hover { background: var(--primary-light); }
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+  .success-msg {
+    display: none; text-align: center; padding: 1.5rem;
+    background: var(--success-bg); border-radius: 12px; margin-top: 1rem;
+  }
+  .success-msg.show { display: block; }
+  .success-msg p { color: var(--success); font-weight: 500; }
+
+  /* ADMIN LOGIN */
+  .admin-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(13,31,31,0.97);
+    z-index: 300; align-items: center; justify-content: center;
+  }
+  .admin-overlay.active { display: flex; }
+  .admin-login-box {
+    background: white; border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 380px;
+    animation: modalIn 0.3s ease;
+  }
+  .admin-login-logo { text-align: center; margin-bottom: 1.5rem; }
+  .admin-login-logo .logo-icon { width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 0.7rem; }
+  .admin-login-logo h2 { font-family: 'Playfair Display', serif; color: var(--dark); font-size: 1.3rem; }
+  .admin-login-logo p { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+  .login-error { background: #fef2f2; color: #b91c1c; border-radius: 8px; padding: 0.6rem 1rem; font-size: 0.85rem; margin-bottom: 1rem; display: none; }
+  .login-error.show { display: block; }
+  .login-cancel { width: 100%; background: transparent; color: var(--muted); border: 1.5px solid var(--border); padding: 0.7rem; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.88rem; cursor: pointer; margin-top: 0.7rem; transition: all 0.2s; }
+  .login-cancel:hover { border-color: var(--primary); color: var(--primary); }
+
+  /* ADMIN DASHBOARD */
+  .admin-dashboard {
+    display: none; position: fixed; inset: 0; background: var(--bg); z-index: 250; overflow-y: auto;
+  }
+  .admin-dashboard.active { display: block; }
+  .admin-nav {
+    background: white; border-bottom: 1px solid var(--border); padding: 0 2rem;
+    height: 64px; display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .admin-nav-left { display: flex; align-items: center; gap: 12px; }
+  .admin-nav-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--dark); font-weight: 700; }
+  .admin-badge { background: var(--primary-pale); color: var(--primary); padding: 3px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+  .admin-nav-right { display: flex; align-items: center; gap: 1rem; }
+  .admin-logout {
+    background: transparent; border: 1.5px solid var(--border); color: var(--muted);
+    padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .admin-logout:hover { border-color: #ef4444; color: #ef4444; }
+  .admin-body { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+  .admin-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .admin-stat {
+    background: white; border: 1px solid var(--border); border-radius: 14px; padding: 1.2rem 1.5rem;
+    transition: all 0.2s;
+  }
+  .admin-stat:hover { border-color: var(--primary); box-shadow: 0 4px 16px rgba(10,92,92,0.1); transform: translateY(-2px); }
+  .admin-stat-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; margin-bottom: 0.4rem; }
+  .admin-stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--primary); font-weight: 700; }
+  .admin-section { background: white; border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .admin-section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .admin-section-title { font-weight: 600; color: var(--dark); font-size: 1rem; }
+  .admin-section-sub { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+  .add-btn {
+    background: var(--primary); color: white; border: none; padding: 0.55rem 1.1rem;
+    border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s; display: flex; align-items: center; gap: 6px;
+  }
+  .add-btn:hover { background: var(--primary-light); }
+
+  .config-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .config-field label { display: block; font-size: 0.82rem; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+  .config-field input {
+    width: 100%; padding: 0.65rem 1rem; border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text); outline: none;
+    transition: border-color 0.2s;
+  }
+  .config-field input:focus { border-color: var(--primary); }
+  .config-field input::placeholder { color: #aab5b5; }
+  .save-config-btn {
+    margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 0.65rem 1.5rem;
+    border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .save-config-btn:hover { background: var(--primary-light); }
+
+  .admin-ebook-list { display: flex; flex-direction: column; gap: 10px; }
+  .admin-ebook-item {
+    display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1rem;
+    border: 1px solid var(--border); border-radius: 10px; background: var(--bg);
+  }
+  .admin-ebook-cover {
+    width: 44px; height: 44px; border-radius: 8px; background: var(--primary-pale);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .admin-ebook-cover svg { width: 22px; height: 22px; stroke: var(--primary); fill: none; stroke-width: 2; }
+  .admin-ebook-info { flex: 1; }
+  .admin-ebook-name { font-weight: 600; color: var(--dark); font-size: 0.9rem; }
+  .admin-ebook-meta { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .admin-ebook-actions { display: flex; gap: 8px; }
+  .icon-btn {
+    width: 32px; height: 32px; border-radius: 7px; border: 1px solid var(--border);
+    background: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { border-color: var(--primary); background: var(--primary-pale); }
+  .icon-btn.del:hover { border-color: #ef4444; background: #fef2f2; }
+  .icon-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .icon-btn.del svg { stroke: #ef4444; }
+
+  .admin-empty {
+    text-align: center; padding: 2.5rem; color: var(--muted);
+    border: 1.5px dashed var(--border); border-radius: 12px;
+  }
+  .admin-empty p { font-size: 0.88rem; }
+
+  .subscribers-table { width: 100%; border-collapse: collapse; }
+  .subscribers-table th {
+    text-align: left; font-size: 0.78rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.05em; padding: 0 0 0.8rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .subscribers-table td { padding: 0.8rem 0; font-size: 0.88rem; border-bottom: 1px solid var(--bg); color: var(--text); }
+  .sub-badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.75rem; font-weight: 600; }
+  .sub-free { background: var(--success-bg); color: var(--success); }
+
+  /* WATCH & LEARN — YouTube Videos */
+  .yt-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+  .yt-card {
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+    background: white; transition: all 0.25s; text-decoration: none; display: block;
+  }
+  .yt-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(10,92,92,0.1); }
+  .yt-thumb {
+    aspect-ratio: 16/9; background: var(--bg); position: relative; overflow: hidden;
+  }
+  .yt-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .yt-play {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 46px; height: 46px; background: rgba(255,0,0,0.9); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .yt-play svg { width: 18px; height: 18px; fill: white; margin-left: 3px; }
+  .yt-card:hover .yt-play { opacity: 1; }
+  .yt-duration {
+    position: absolute; bottom: 6px; right: 8px;
+    background: rgba(0,0,0,0.8); color: white;
+    font-size: 0.7rem; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+  }
+  .yt-info { padding: 0.9rem 1rem 1rem; }
+  .yt-title {
+    font-weight: 600; color: var(--dark); font-size: 0.88rem; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    margin-bottom: 0.4rem;
+  }
+  .yt-meta { font-size: 0.75rem; color: var(--muted); }
+  .yt-loading { display: grid; grid-template-columns: repeat(3,1fr); gap: 1.2rem; }
+  .yt-skeleton {
+    border-radius: 14px; border: 1px solid var(--border); overflow: hidden;
+    background: white;
+  }
+  .yt-skeleton::before {
+    content: ''; display: block; aspect-ratio: 16/9;
+    background: linear-gradient(90deg, var(--bg) 25%, var(--border) 50%, var(--bg) 75%);
+    background-size: 200% 100%; animation: shimmer 1.4s infinite;
+  }
+  .yt-skeleton::after {
+    content: ''; display: block; height: 72px; margin: 0.9rem 1rem;
+    background: linear-gradient(90deg, var(--bg) 25%, var(--border) 50%, var(--bg) 75%);
+    background-size: 200% 100%; border-radius: 8px; animation: shimmer 1.4s infinite 0.2s;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+  .yt-error { text-align: center; padding: 3rem; color: var(--muted); grid-column: 1/-1; }
+  .yt-error a { color: var(--primary); text-decoration: none; font-weight: 600; }
+  @media (max-width: 900px) {
+    .yt-grid, .yt-loading { grid-template-columns: 1fr; }
+  }
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .yt-grid, .yt-loading { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* COVER IMAGE UPLOAD BOX */
+  .cover-upload-box {
+    border: 2px dashed var(--border); border-radius: 12px;
+    padding: 1.4rem; text-align: center; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center;
+    transition: all 0.2s; background: var(--bg);
+  }
+  .cover-upload-box:hover { border-color: var(--primary); background: var(--primary-pale); }
+  .cover-upload-box.dragover { border-color: var(--primary); background: var(--primary-pale); }
+
+  /* BACK TO TOP */
+  .back-to-top {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.8); padding: 8px 16px; border-radius: 30px;
+    font-size: 0.82rem; font-weight: 500; cursor: pointer;
+    text-decoration: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+  }
+  .back-to-top:hover { background: rgba(255,255,255,0.2); color: white; transform: translateY(-2px); }
+  .back-to-top svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; transition: transform 0.2s; }
+  .back-to-top:hover svg { transform: translateY(-2px); }
+
+  /* ADD EBOOK MODAL */
+  .add-ebook-modal { max-width: 520px; }
+  .radio-group { display: flex; gap: 1rem; margin-bottom: 1rem; }
+  .radio-opt {
+    flex: 1; padding: 0.7rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+    display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all 0.2s;
+  }
+  .radio-opt.selected { border-color: var(--primary); background: var(--primary-pale); }
+  .radio-opt input { accent-color: var(--primary); }
+  .radio-opt label { font-size: 0.88rem; font-weight: 500; cursor: pointer; }
+
+  /* Fix: modals inside fixed dashboard need higher z-index */
+  #add-ebook-modal { z-index: 400; }
+  #add-ebook-modal .modal { position: relative; z-index: 401; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 2rem; right: 2rem; background: var(--dark); color: white;
+    padding: 0.8rem 1.3rem; border-radius: 10px; font-size: 0.88rem; z-index: 400;
+    transform: translateY(100px); opacity: 0; transition: all 0.3s; display: flex; align-items: center; gap: 8px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--success); }
+  .toast svg { width: 16px; height: 16px; fill: none; stroke: white; stroke-width: 2.5; flex-shrink: 0; }
+
+  /* CONTACT SECTION */
+  .contact-section { background: var(--bg); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem;
+  }
+  .contact-card {
+    background: white; border: 1px solid var(--border); border-radius: 20px;
+    padding: 2rem; display: flex; flex-direction: column; gap: 1.5rem;
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .contact-card:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(10,92,92,0.09); }
+  .contact-card.featured {
+    background: linear-gradient(135deg, #0a5c5c 0%, #0d7a7a 100%);
+    border-color: transparent; grid-column: 1 / -1;
+  }
+  .contact-card-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .contact-card-icon svg { width: 26px; height: 26px; fill: none; stroke-width: 1.8; }
+  .contact-card-icon.yt  { background: #fff0f0; }
+  .contact-card-icon.yt svg  { stroke: #ff0000; }
+  .contact-card-icon.wa  { background: #e8f9ef; }
+  .contact-card-icon.wa svg  { stroke: #1aad19; }
+  .contact-card-icon.em  { background: var(--primary-pale); }
+  .contact-card-icon.em svg  { stroke: var(--primary); }
+  .contact-card-icon.wh  { background: rgba(255,255,255,0.15); }
+  .contact-card-icon.wh svg  { stroke: white; }
+  .contact-card-label {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2px;
+  }
+  .contact-card.featured .contact-card-label { color: rgba(255,255,255,0.6); }
+  .contact-card-value {
+    font-size: 1rem; font-weight: 600; color: var(--dark);
+    word-break: break-all; line-height: 1.4;
+  }
+  .contact-card.featured .contact-card-value { color: white; }
+  .contact-card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; margin-top: 2px; }
+  .contact-card.featured .contact-card-desc { color: rgba(255,255,255,0.7); }
+  .contact-card-header { display: flex; align-items: center; gap: 1rem; }
+  .contact-card-text { flex: 1; }
+  .contact-link-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 1rem; padding: 0.55rem 1.1rem; border-radius: 8px;
+    font-size: 0.83rem; font-weight: 600; text-decoration: none;
+    transition: all 0.2s; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  }
+  .contact-link-btn svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.5; }
+  .contact-link-btn.yt-btn { background: #ff0000; color: white; }
+  .contact-link-btn.yt-btn:hover { background: #cc0000; }
+  .contact-link-btn.wa-btn { background: #1aad19; color: white; }
+  .contact-link-btn.wa-btn:hover { background: #148a13; }
+  .contact-link-btn.em-btn { background: var(--primary); color: white; }
+  .contact-link-btn.em-btn:hover { background: var(--primary-light); }
+  .contact-link-btn.wh-btn { background: white; color: var(--primary); }
+  .contact-link-btn.wh-btn:hover { background: var(--primary-pale); }
+  .contact-placeholder {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 0.8rem; font-size: 0.8rem; color: var(--muted);
+    background: var(--bg); border: 1px dashed var(--border);
+    padding: 5px 12px; border-radius: 6px;
+  }
+  .contact-placeholder svg { width: 12px; height: 12px; stroke: var(--muted); fill: none; stroke-width: 2; }
+
+  /* WELCOME POPUP */
+  .welcome-overlay {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    align-items: center; justify-content: center; padding: 1rem;
+  }
+  .welcome-overlay.active { display: flex; }
+  .welcome-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(5, 20, 20, 0.82);
+    backdrop-filter: blur(6px);
+  }
+  .welcome-popup {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 520px;
+    border-radius: 24px; overflow: hidden;
+    animation: popIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.4);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.85) translateY(30px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .wp-top {
+    background: linear-gradient(135deg, #0a5c5c 0%, #0d7a7a 50%, #0a5c5c 100%);
+    padding: 2.5rem 2.5rem 2rem; position: relative; overflow: hidden; text-align: center;
+  }
+  .wp-top::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 200px; height: 200px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .wp-top::after {
+    content: ''; position: absolute; bottom: -40px; left: -40px;
+    width: 150px; height: 150px; border-radius: 50%;
+    background: rgba(200,169,110,0.15);
+  }
+  .wp-close {
+    position: absolute; top: 1rem; right: 1rem; z-index: 2;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,0.15); border: none; cursor: pointer;
+    color: rgba(255,255,255,0.8); font-size: 1rem; display: flex;
+    align-items: center; justify-content: center; transition: background 0.2s;
+  }
+  .wp-close:hover { background: rgba(255,255,255,0.25); }
+  .wp-gift {
+    width: 72px; height: 72px; border-radius: 20px;
+    background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 1.2rem; position: relative; z-index: 1;
+  }
+  .wp-gift svg { width: 38px; height: 38px; stroke: white; fill: none; stroke-width: 1.8; }
+  .wp-eyebrow {
+    display: inline-block; background: rgba(200,169,110,0.3);
+    border: 1px solid rgba(200,169,110,0.5); color: #f0d4a0;
+    padding: 4px 14px; border-radius: 20px; font-size: 0.75rem;
+    font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 0.8rem; position: relative; z-index: 1;
+  }
+  .wp-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700;
+    color: white; line-height: 1.2; margin-bottom: 0.7rem;
+    position: relative; z-index: 1;
+  }
+  .wp-headline span { color: #f0d4a0; }
+  .wp-sub {
+    color: rgba(255,255,255,0.75); font-size: 0.9rem;
+    line-height: 1.6; position: relative; z-index: 1;
+  }
+  .wp-perks {
+    display: flex; justify-content: center; gap: 1.2rem;
+    margin-top: 1.4rem; position: relative; z-index: 1; flex-wrap: wrap;
+  }
+  .wp-perk {
+    display: flex; align-items: center; gap: 5px;
+    color: rgba(255,255,255,0.85); font-size: 0.78rem; font-weight: 500;
+  }
+  .wp-perk svg { width: 14px; height: 14px; stroke: #c8e8b8; fill: none; stroke-width: 2.5; flex-shrink: 0; }
+  .wp-bottom {
+    background: white; padding: 2rem 2.5rem 2.5rem;
+  }
+  .wp-form-label {
+    font-size: 0.82rem; font-weight: 600; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 1rem; display: block;
+  }
+  .wp-input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.2rem; }
+  .wp-input {
+    width: 100%; padding: 0.8rem 1rem; border: 1.5px solid var(--border);
+    border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    color: var(--text); outline: none; transition: border-color 0.2s; background: var(--bg);
+  }
+  .wp-input:focus { border-color: var(--primary); background: white; }
+  .wp-submit {
+    width: 100%; padding: 0.9rem; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, #0a5c5c, #0d7a7a);
+    color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    transition: all 0.2s; letter-spacing: 0.01em;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .wp-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(10,92,92,0.35); }
+  .wp-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; box-shadow: none; }
+  .wp-submit svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2.5; }
+  .wp-skip {
+    text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--muted);
+  }
+  .wp-skip a { color: var(--muted); cursor: pointer; text-decoration: underline; }
+  .wp-skip a:hover { color: var(--primary); }
+
+  /* Popup ebook list — Step 2 */
+  .wp-ebook-list { display: flex; flex-direction: column; gap: 10px; }
+  .wp-ebook-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 12px; padding: 0.9rem 1rem;
+    text-decoration: none; transition: all 0.2s; cursor: pointer;
+  }
+  .wp-ebook-item:hover {
+    border-color: var(--primary); background: var(--primary-pale);
+    transform: translateX(4px);
+  }
+  .wp-ebook-item-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--primary-pale); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .wp-ebook-item-icon svg { width: 20px; height: 20px; stroke: var(--primary); fill: none; stroke-width: 2; }
+  .wp-ebook-item-info { flex: 1; }
+  .wp-ebook-item-title { font-weight: 600; color: var(--dark); font-size: 0.9rem; line-height: 1.3; }
+  .wp-ebook-item-desc { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+  .wp-ebook-item-arrow { color: var(--primary); font-size: 1.1rem; flex-shrink: 0; transition: transform 0.2s; }
+  .wp-ebook-item:hover .wp-ebook-item-arrow { transform: translateX(3px); }
+  .wp-privacy {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    font-size: 0.75rem; color: #aab5b5; margin-top: 0.6rem;
+  }
+  .wp-privacy svg { width: 12px; height: 12px; stroke: #aab5b5; fill: none; stroke-width: 2; }
+  .wp-success {
+    text-align: center; padding: 1.5rem 0 0.5rem; display: none;
+  }
+  .wp-success-icon {
+    width: 60px; height: 60px; border-radius: 50%;
+    background: var(--success-bg); border: 2px solid #a7dfc0;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;
+  }
+  .wp-success-icon svg { width: 28px; height: 28px; stroke: var(--success); fill: none; stroke-width: 2.5; }
+  .wp-success h3 { font-family: 'Playfair Display', serif; color: var(--dark); font-size: 1.3rem; margin-bottom: 0.4rem; }
+  .wp-success p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .container, .nav-inner, .hero-inner, .stats-bar-inner, .section-inner { padding: 0 1.2rem; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .contact-card.featured { grid-column: 1; }
+    .hero-inner { flex-direction: column; padding-top: 50px; padding-bottom: 60px; gap: 3rem; }
+    .hero-visual { flex: none; width: 100%; }
+    .hero-card { max-width: 100%; }
+    .about-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .stats-bar-inner { gap: 2rem; }
+    .config-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .newsletter-form { flex-direction: column; }
+    footer { border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+<!-- NAV -->
+<div class="nav-card">
+<nav>
+  <div class="nav-inner">
+  <a href="#" class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7L12 2z"/><path d="M12 12a3 3 0 100-6 3 3 0 000 6z"/><path d="M12 12v7"/></svg>
+    </div>
+    <span class="logo-text">Good Life Medics</span>
+  </a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#free-ebooks">Free Guides</a>
+    <a href="#paid-ebooks">Premium</a>
+    <a href="#contact-section">Contact</a>
+  </div>
+  <a href="#free-ebooks" class="nav-btn">Get Free Ebook</a>
+  </div>
+</nav>
+</div>
+
+<!-- HERO -->
+<div class="section-card white">
+<section class="hero">
+  <div class="hero-inner">
+  <div class="hero-content">
+    <div class="hero-badge"><span></span> Trusted Medical Education</div>
+    <h1>Evidence-Based Health Knowledge <em>At Your Fingertips</em></h1>
+    <p class="hero-sub">Get expert medical insights from a trusted YouTube health educator. Download free guides and access premium resources to take charge of your health.</p>
+    <div class="hero-actions">
+      <a href="#free-ebooks" class="btn-primary">Get Free Ebook ↓</a>
+      <a href="#paid-ebooks" class="btn-outline">Premium Guides</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="hero-card-header">
+        <div class="avatar">G</div>
+        <div>
+          <div class="hero-card-name">Good Life Medics</div>
+          <div class="hero-card-title">YouTube Health Educator</div>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-box">
+          <div class="stat-num">10K+</div>
+          <div class="stat-label">Subscribers</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Videos</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">5K+</div>
+          <div class="stat-label">Lives Impacted</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Free Content</div>
+        </div>
+      </div>
+      <div class="trust-bar">
+        <div class="trust-dot"></div>
+        <div class="trust-text">Evidence-based, expertly reviewed content</div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- STATS BAR -->
+<div class="section-card teal">
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+  <div class="stats-bar-item">
+    <div class="stats-bar-num">10,000+</div>
+    <div class="stats-bar-label">YouTube Subscribers</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="stats-bar-num">5,000+</div>
+    <div class="stats-bar-label">Ebooks Downloaded</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="stats-bar-num">50+</div>
+    <div class="stats-bar-label">Health Topics Covered</div>
+  </div>
+  <div class="stats-bar-item">
+    <div class="stats-bar-num">100%</div>
+    <div class="stats-bar-label">Free Core Content</div>
+  </div>
+  </div>
+</div>
+</div>
+
+<!-- ABOUT -->
+<div class="section-card white">
+<section id="about">
+  <div class="section-inner">
+  <div class="section-tag">About</div>
+  <h2 class="section-title">Meet Your Health Educator</h2>
+  <p class="section-sub">Dedicated to making medical knowledge accessible, accurate, and actionable for everyone.</p>
+  <div class="about-grid">
+    <div class="about-img-wrap" id="creator-photo-wrap" style="cursor:default;">
+      <div class="about-img-placeholder" id="creator-photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        <p>Creator photo goes here</p>
+      </div>
+      <img id="creator-photo-img" src="" alt="Creator" style="display:none;width:100%;height:100%;object-fit:cover;border-radius:20px;" />
+    </div>
+    <div class="about-content">
+      <div class="section-tag">Our Mission</div>
+      <h3 class="section-title" style="font-size:1.6rem;">Simplifying Medicine<br/>For Everyday People</h3>
+      <p>Good Life Medics was founded on the belief that everyone deserves access to clear, accurate, and evidence-based health information. Through YouTube videos and downloadable guides, we break down complex medical topics into simple, actionable knowledge.</p>
+      <p>Our resources are carefully researched, regularly updated, and designed to empower you — whether you're managing a chronic condition, looking to improve your lifestyle, or simply want to understand your health better.</p>
+      <div class="badges">
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+          Verified Medical Content
+        </div>
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Expert Reviewed
+        </div>
+        <div class="badge">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          10,000+ Readers
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- FREE EBOOKS -->
+<div class="section-card pale">
+<section id="free-ebooks">
+  <div class="section-inner">
+  <div class="ebooks-header">
+    <div>
+      <div class="section-tag">Free Resources</div>
+      <h2 class="section-title">Free Medical Guides</h2>
+      <p class="section-sub">Download free, expert-written health guides. Just enter your name and email.</p>
+    </div>
+  </div>
+  <div class="ebook-grid" id="free-ebooks-grid">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <h3>Free ebooks coming soon</h3>
+      <p>Check back soon for free health guides</p>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- PAID EBOOKS -->
+<div class="section-card white">
+<section id="paid-ebooks">
+  <div class="section-inner">
+  <div class="ebooks-header">
+    <div>
+      <div class="section-tag">Premium Resources</div>
+      <h2 class="section-title">Premium Medical Guides</h2>
+      <p class="section-sub">In-depth, comprehensive guides for those who want to go deeper. Purchase via WhatsApp.</p>
+    </div>
+  </div>
+  <div class="ebook-grid" id="paid-ebooks-grid">
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <h3>Premium guides coming soon</h3>
+      <p>Exclusive premium health guides will be available here</p>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- TESTIMONIALS — kept below Watch & Learn -->
+<div class="section-card teal">
+<section class="testimonials" id="testimonials">
+  <div class="section-inner">
+  <div class="section-tag" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.9);">Testimonials</div>
+  <h2 class="section-title">What Our Readers Say</h2>
+  <p class="section-sub">Thousands of people have transformed their health knowledge with our guides.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"The diabetes guide completely changed how I manage my condition. It's written in such a clear, understandable way — no medical jargon!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AN</div>
+        <div>
+          <div class="testi-name">Adaeze Nwosu</div>
+          <div class="testi-loc">Lagos, Nigeria</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"I downloaded the heart health guide and immediately shared it with my family. The practical tips are life-changing. Thank you Good Life Medics!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar">EO</div>
+        <div>
+          <div class="testi-name">Emeka Obi</div>
+          <div class="testi-loc">Abuja, Nigeria</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="stars">★★★★★</div>
+      <p class="testi-text">"Finally, a Nigerian medical educator I can trust! The content is scientifically accurate and so relevant to our local context and diet."</p>
+      <div class="testi-author">
+        <div class="testi-avatar">FK</div>
+        <div>
+          <div class="testi-name">Fatima Kabir</div>
+          <div class="testi-loc">Kano, Nigeria</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- WATCH & LEARN -->
+<div class="section-card white" id="watch-learn">
+<section>
+  <div class="section-inner">
+    <div class="section-tag" style="display:inline-flex;align-items:center;gap:8px;">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="#FF0000" stroke="none"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+      Watch &amp; Learn
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;">
+      <div>
+        <h2 class="section-title">Latest From YouTube</h2>
+        <p class="section-sub">Free health education videos — new content every week.</p>
+      </div>
+      <a href="https://www.youtube.com/@chinonyeremeuphemia8308" target="_blank" class="btn-outline" style="font-size:0.85rem;padding:0.55rem 1.2rem;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="#FF0000" stroke="none"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        Subscribe on YouTube
+      </a>
+    </div>
+
+    <!-- Video grid -->
+    <div id="yt-videos-grid" class="yt-grid">
+      <!-- Loading state -->
+      <div class="yt-loading" id="yt-loading">
+        <div class="yt-skeleton"></div>
+        <div class="yt-skeleton"></div>
+        <div class="yt-skeleton"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="section-card white">
+<section>
+  <div class="section-inner">
+  <div class="newsletter-wrap">
+    <div class="newsletter-icon">
+      <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+    </div>
+    <h3 class="newsletter-title">Stay in the Loop</h3>
+    <p class="newsletter-sub">Get notified when new health guides drop. No spam, ever.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Your email address" id="newsletter-email" />
+      <button onclick="subscribeNewsletter()">Subscribe</button>
+    </div>
+    <div id="newsletter-success" class="success-msg" style="margin-top:1rem;">
+      <p>✅ You're subscribed! We'll notify you of new guides.</p>
+    </div>
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- CONTACT SECTION -->
+<div class="section-card pale">
+<section class="contact-section" id="contact-section">
+  <div class="section-inner">
+  <div class="section-tag">Get In Touch</div>
+  <h2 class="section-title">Contact & Connect</h2>
+  <p class="section-sub">Have a question, want to collaborate, or just want to say hi? Reach out through any of the channels below.</p>
+  <div class="contact-grid">
+
+    <!-- YouTube — Featured -->
+    <div class="contact-card featured">
+      <div class="contact-card-header">
+        <div class="contact-card-icon" style="background:white; border-radius:12px; width:52px; height:52px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="none">
+            <path fill="#FF0000" d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
+            <polygon fill="white" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/>
+          </svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">YouTube Channel</div>
+          <div class="contact-card-value">@chinonyeremeuphemia8308</div>
+          <div class="contact-card-desc">Watch free medical education videos, health tips, and expert breakdowns every week. Subscribe and never miss a video!</div>
+        </div>
+      </div>
+      <div>
+        <a href="https://www.youtube.com/@chinonyeremeuphemia8308" target="_blank" class="contact-link-btn wh-btn">
+          <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Visit YouTube Channel
+        </a>
+      </div>
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="contact-card">
+      <div class="contact-card-header">
+        <div class="contact-card-icon wa">
+          <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">WhatsApp</div>
+          <div class="contact-card-value" id="contact-wa-number">Not set yet</div>
+          <div class="contact-card-desc">Send a message for ebook purchases or direct enquiries. We typically respond within a few hours.</div>
+        </div>
+      </div>
+      <div id="contact-wa-btn-wrap">
+        <span class="contact-placeholder">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          WhatsApp number will appear here once configured
+        </span>
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="contact-card">
+      <div class="contact-card-header">
+        <div class="contact-card-icon em">
+          <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="contact-card-text">
+          <div class="contact-card-label">Email</div>
+          <div class="contact-card-value" id="contact-email-value">Not set yet</div>
+          <div class="contact-card-desc">For business inquiries, collaborations, or general questions. We'll get back to you within 24–48 hours.</div>
+        </div>
+      </div>
+      <div id="contact-email-btn-wrap">
+        <span class="contact-placeholder">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          Email will appear here once configured
+        </span>
+      </div>
+    </div>
+
+  </div>
+  </div>
+</section>
+</div>
+
+<!-- FOOTER -->
+<div class="section-card dark">
+<footer>
+  <div class="container">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="footer-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L4 7v10l8 5 8-5V7L12 2z"/></svg>
+        </div>
+        <span class="footer-logo-text">Good Life Medics</span>
+      </div>
+      <p class="footer-desc">Evidence-based health education for everyone. Making medicine simple, accessible, and actionable.</p>
+      <div class="social-links">
+        <a href="https://www.youtube.com/@chinonyeremeuphemia8308" target="_blank" class="social-btn" title="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
+        <div class="social-btn" title="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div class="social-btn" title="Twitter/X">
+          <svg viewBox="0 0 24 24"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="#about">About Us</a>
+      <a href="#free-ebooks">Free Guides</a>
+      <a href="#paid-ebooks">Premium Guides</a>
+      <a href="#contact-section">Contact</a>
+    </div>
+    <div class="footer-col">
+      <h4>Resources</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+      <a href="https://www.youtube.com/@chinonyeremeuphemia8308" target="_blank">YouTube Channel</a>
+      <a href="#contact-section">Contact Us</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Good Life Medics. All rights reserved.</span>
+    <a href="#" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+      <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+      Back to Top
+    </a>
+    <a href="#" class="footer-admin-link" onclick="showAdminLogin(event)">Admin</a>
+  </div>
+  </div>
+</footer>
+</div><!-- end footer card -->
+
+</div><!-- end page-wrap -->
+
+<!-- FREE EBOOK MODAL -->
+<div class="modal-overlay" id="free-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('free-modal')">✕</button>
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+    </div>
+    <h3 class="modal-title">Get Your Free Copy</h3>
+    <p class="modal-sub">Enter your details and instantly download <span class="modal-ebook-name" id="modal-ebook-name"></span>.</p>
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="sub-name" placeholder="e.g. Adaeze Nwosu" />
+    </div>
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="sub-email" placeholder="your@email.com" />
+    </div>
+    <button class="form-submit" id="sub-btn" onclick="submitSubscription()">
+      ⬇️ Download Now
+    </button>
+    <div class="success-msg" id="sub-success">
+      <p>✅ Opening your ebook now. Enjoy!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="admin-overlay" id="admin-login">
+  <div class="admin-login-box">
+    <div class="admin-login-logo">
+      <div class="logo-icon" style="width:48px;height:48px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 0.7rem;">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
+      <h2>Admin Login</h2>
+      <p>Good Life Medics Dashboard</p>
+    </div>
+    <div class="login-error" id="login-error">Incorrect password. Please try again.</div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="admin-password" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="form-submit" onclick="doLogin()">Access Dashboard</button>
+    <button class="login-cancel" onclick="closeAdminLogin()">Cancel</button>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="admin-dashboard" id="admin-dashboard">
+  <div class="admin-nav">
+    <div class="admin-nav-left">
+      <div class="logo-icon" style="width:34px;height:34px;border-radius:8px;background:var(--primary);display:flex;align-items:center;justify-content:center;">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2"><path d="M12 2L4 7v10l8 5 8-5V7L12 2z"/></svg>
+      </div>
+      <span class="admin-nav-title">Good Life Medics</span>
+      <span class="admin-badge">Admin</span>
+    </div>
+    <div class="admin-nav-right">
+      <button class="admin-logout" onclick="adminLogout()">Logout</button>
+    </div>
+  </div>
+  <div class="admin-body">
+
+    <!-- STATS -->
+    <div class="admin-stats">
+      <div class="admin-stat" onclick="adminScrollTo('subscribers-section')" style="cursor:pointer;" title="View subscribers">
+        <div class="admin-stat-label">Total Subscribers</div>
+        <div class="admin-stat-num" id="stat-subs">0</div>
+      </div>
+      <div class="admin-stat" onclick="adminScrollTo('free-section')" style="cursor:pointer;" title="View free ebooks">
+        <div class="admin-stat-label">Free Ebooks</div>
+        <div class="admin-stat-num" id="stat-free">0</div>
+      </div>
+      <div class="admin-stat" onclick="adminScrollTo('paid-section')" style="cursor:pointer;" title="View paid ebooks">
+        <div class="admin-stat-label">Paid Ebooks</div>
+        <div class="admin-stat-num" id="stat-paid">0</div>
+      </div>
+      <div class="admin-stat" onclick="adminScrollTo('newsletter-section')" style="cursor:pointer;" title="View newsletter signups">
+        <div class="admin-stat-label">Newsletter Signups</div>
+        <div class="admin-stat-num" id="stat-news">0</div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="admin-section" id="settings-section">
+      <div class="admin-section-header">
+        <div>
+          <div class="admin-section-title">Settings & Configuration</div>
+          <div class="admin-section-sub">Configure your WhatsApp number, email and creator photo</div>
+        </div>
+      </div>
+
+      <!-- Creator Photo Upload -->
+      <div style="margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border);">
+        <div style="font-size:0.88rem;font-weight:600;color:var(--text);margin-bottom:0.8rem;">Creator Photo</div>
+        <div style="display:flex;align-items:center;gap:1.2rem;flex-wrap:wrap;">
+          <div id="admin-creator-preview" style="width:72px;height:72px;border-radius:50%;background:var(--primary-pale);border:2px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div>
+            <button onclick="document.getElementById('creator-photo-file').click()" style="background:var(--primary);color:white;border:none;padding:0.5rem 1.1rem;border-radius:8px;font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Upload Photo</button>
+            <button onclick="clearCreatorPhoto()" style="background:transparent;color:var(--muted);border:1px solid var(--border);padding:0.5rem 1rem;border-radius:8px;font-size:0.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;margin-left:8px;">Remove</button>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;">JPG, PNG · Max 2MB · Square photo recommended</div>
+          </div>
+          <input type="file" id="creator-photo-file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleCreatorPhotoUpload(this)" />
+        </div>
+      </div>
+      <div class="config-grid">
+        <div class="config-field">
+          <label>WhatsApp Number (with country code)</label>
+          <input type="text" id="cfg-whatsapp" placeholder="+2348012345678" />
+        </div>
+        <div class="config-field">
+          <label>Creator Notification Email</label>
+          <input type="email" id="cfg-email" placeholder="creator@email.com" />
+        </div>
+        <div class="config-field">
+          <label>Supabase URL</label>
+          <input type="text" id="cfg-supabase-url" placeholder="https://xxxx.supabase.co" />
+        </div>
+        <div class="config-field">
+          <label>Resend API Key</label>
+          <input type="text" id="cfg-resend-key" placeholder="re_xxxxxxxxxxxx" />
+        </div>
+      </div>
+      <button class="save-config-btn" onclick="saveConfig()">Save Configuration</button>
+    </div>
+
+    <!-- FREE EBOOKS MANAGEMENT -->
+    <div class="admin-section" id="free-section">
+      <div class="admin-section-header">
+        <div>
+          <div class="admin-section-title">Free Ebooks</div>
+          <div class="admin-section-sub">Manage free ebook listings</div>
+        </div>
+        <button class="add-btn" onclick="openAddEbook('free')">+ Add Free Ebook</button>
+      </div>
+      <div class="admin-ebook-list" id="admin-free-list">
+        <div class="admin-empty"><p>No free ebooks added yet. Click "Add Free Ebook" to get started.</p></div>
+      </div>
+    </div>
+
+    <!-- PAID EBOOKS MANAGEMENT -->
+    <div class="admin-section" id="paid-section">
+      <div class="admin-section-header">
+        <div>
+          <div class="admin-section-title">Paid Ebooks</div>
+          <div class="admin-section-sub">Manage paid ebook listings</div>
+        </div>
+        <button class="add-btn" onclick="openAddEbook('paid')">+ Add Paid Ebook</button>
+      </div>
+      <div class="admin-ebook-list" id="admin-paid-list">
+        <div class="admin-empty"><p>No paid ebooks added yet. Click "Add Paid Ebook" to get started.</p></div>
+      </div>
+    </div>
+
+    <!-- SUBSCRIBERS -->
+    <div class="admin-section" id="subscribers-section">
+      <div class="admin-section-header">
+        <div>
+          <div class="admin-section-title">Subscribers</div>
+          <div class="admin-section-sub">All users who downloaded a free ebook</div>
+        </div>
+        <button class="add-btn" style="background:var(--success);" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div id="subscribers-wrap">
+        <div class="admin-empty"><p>No subscribers yet. They will appear here when someone downloads a free ebook.</p></div>
+      </div>
+    </div>
+
+    <!-- NEWSLETTER SIGNUPS -->
+    <div class="admin-section" id="newsletter-section">
+      <div class="admin-section-header">
+        <div>
+          <div class="admin-section-title">Newsletter Signups</div>
+          <div class="admin-section-sub">Users who subscribed to the newsletter</div>
+        </div>
+      </div>
+      <div id="newsletter-wrap">
+        <div class="admin-empty"><p>No newsletter signups yet.</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD EBOOK MODAL -->
+<div class="modal-overlay" id="add-ebook-modal" style="z-index:400;">
+  <div class="modal add-ebook-modal">
+    <button class="modal-close" onclick="closeModal('add-ebook-modal')">✕</button>
+    <div class="modal-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+    </div>
+    <h3 class="modal-title" id="add-modal-title">Add Free Ebook</h3>
+    <input type="hidden" id="add-ebook-type" value="free" />
+    <input type="hidden" id="edit-ebook-id" value="" />
+    <input type="hidden" id="ebook-cover" />
+
+    <!-- Cover image preview -->
+    <div id="ebook-cover-preview" style="display:none; margin-bottom:1rem; border-radius:12px; overflow:hidden; aspect-ratio:16/7; background:var(--bg); border:1px solid var(--border); position:relative;">
+      <img id="ebook-cover-img" src="" alt="Cover preview" style="width:100%;height:100%;object-fit:cover;" />
+      <button onclick="clearCoverImage()" style="position:absolute;top:6px;right:6px;background:rgba(0,0,0,0.55);border:none;color:white;border-radius:6px;padding:3px 10px;font-size:0.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;">✕ Remove</button>
+    </div>
+
+    <div class="form-group">
+      <label>Ebook Title</label>
+      <input type="text" id="ebook-title" placeholder="e.g. Understanding Diabetes" />
+    </div>
+    <div class="form-group">
+      <label style="display:flex;justify-content:space-between;align-items:center;">
+        Short Description
+        <span id="desc-counter" style="font-size:0.75rem;font-weight:400;color:var(--muted);">0 / 120</span>
+      </label>
+      <textarea id="ebook-desc" placeholder="Brief description of the ebook (max 120 characters — fits 3 lines)" maxlength="120" rows="3" oninput="updateDescCounter(this)" style="width:100%;padding:0.75rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:0.92rem;color:var(--text);outline:none;resize:none;transition:border-color 0.2s;background:var(--bg);"></textarea>
+    </div>
+    <div class="form-group">
+      <label>Cover Image</label>
+      <div class="cover-upload-box" id="cover-upload-box" onclick="document.getElementById('ebook-cover-file').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:28px;height:28px;stroke:var(--muted);margin-bottom:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        <span id="upload-label" style="font-size:0.88rem;color:var(--text);font-weight:500;">Click to upload cover image</span>
+        <small style="font-size:0.75rem;color:var(--muted);margin-top:2px;">JPG, PNG, WEBP · Max 2MB</small>
+      </div>
+      <input type="file" id="ebook-cover-file" accept="image/jpeg,image/png,image/webp" style="display:none;" onchange="handleCoverUpload(this)" />
+    </div>
+    <div class="form-group" id="ebook-link-group">
+      <label>Google Drive Link (PDF)</label>
+      <input type="text" id="ebook-link" placeholder="https://drive.google.com/..." />
+    </div>
+    <div class="form-group" id="ebook-price-group" style="display:none;">
+      <label>Price (₦)</label>
+      <input type="text" id="ebook-price" placeholder="e.g. 5000" />
+    </div>
+    <button class="form-submit" id="save-ebook-btn" onclick="saveEbook()">Add Ebook</button>
+  </div>
+</div>
+
+<!-- WELCOME POPUP -->
+<div class="welcome-overlay" id="welcome-popup">
+  <div class="welcome-backdrop" onclick="closeWelcomePopup()"></div>
+  <div class="welcome-popup" id="wp-container">
+
+    <!-- STEP 1: Form -->
+    <div id="wp-step1">
+      <div class="wp-top">
+        <button class="wp-close" onclick="closeWelcomePopup()">✕</button>
+        <div class="wp-gift">
+          <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12M22 7H2v5h20V7zM12 22V7M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+        </div>
+        <div class="wp-eyebrow">🎁 Free Gift For You</div>
+        <h2 class="wp-headline">Get Your <span>Free</span><br/>Health Ebook Today</h2>
+        <p class="wp-sub">Join thousands of Nigerians taking charge of their health with evidence-based medical guides — completely free.</p>
+        <div class="wp-perks">
+          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Instant access</div>
+          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Expert-reviewed</div>
+          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>100% Free</div>
+        </div>
+      </div>
+      <div class="wp-bottom">
+        <span class="wp-form-label">Enter your details to get instant access</span>
+        <div class="wp-input-group">
+          <input class="wp-input" type="text" id="wp-name" placeholder="👤  Your full name" />
+          <input class="wp-input" type="email" id="wp-email" placeholder="📧  Your email address" />
+        </div>
+        <button class="wp-submit" id="wp-btn" onclick="submitWelcomeForm()">
+          <svg viewBox="0 0 24 24"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
+          Show Me The Free Ebooks
+        </button>
+        <div class="wp-privacy">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Your info is safe. No spam, ever. Unsubscribe anytime.
+        </div>
+        <div class="wp-skip"><a onclick="closeWelcomePopup()">No thanks, I'll skip for now</a></div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Ebook List -->
+    <div id="wp-step2" style="display:none;">
+      <div class="wp-top" style="padding-bottom:1.5rem;">
+        <button class="wp-close" onclick="closeWelcomePopup()">✕</button>
+        <div class="wp-gift">
+          <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div class="wp-eyebrow">✅ You're In!</div>
+        <h2 class="wp-headline">Your Free <span>Ebooks</span><br/>Are Ready</h2>
+        <p class="wp-sub">Click any ebook below to download it instantly. Enjoy!</p>
+      </div>
+      <div class="wp-bottom" style="padding-top:1.2rem;">
+        <div id="wp-ebook-list" class="wp-ebook-list"></div>
+        <div id="wp-no-ebooks" style="display:none; text-align:center; padding:1rem 0;">
+          <p style="color:var(--muted); font-size:0.88rem;">No free ebooks available yet — check back soon!</p>
+        </div>
+        <div class="wp-skip" style="margin-top:1rem;"><a onclick="closeWelcomePopup()">Close & browse the site</a></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+  <span id="toast-msg">Saved!</span>
+</div>
+
+<script>
+  // ---- DATA STORE (localStorage for prototype) ----
+  const store = {
+    get: (k) => JSON.parse(localStorage.getItem('glm_'+k) || 'null'),
+    set: (k, v) => localStorage.setItem('glm_'+k, JSON.stringify(v)),
+  };
+
+  const ADMIN_PASS = 'goodlifeadmin2026';
+
+  // ---- ADMIN SCROLL ----
+  function adminScrollTo(id) {
+    const el = document.getElementById(id);
+    if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ---- DESC COUNTER ----
+  function updateDescCounter(el) {
+    const count = el.value.length;
+    const counter = document.getElementById('desc-counter');
+    counter.textContent = count + ' / 120';
+    counter.style.color = count > 100 ? '#e67e22' : count >= 120 ? '#e74c3c' : 'var(--muted)';
+  }
+
+  // ---- CREATOR PHOTO ----
+  function handleCreatorPhotoUpload(input) {
+    const file = input.files[0];
+    if(!file) return;
+    if(file.size > 2 * 1024 * 1024) { showToast('Image too large — max 2MB', 'error'); input.value=''; return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const b64 = e.target.result;
+      store.set('creator_photo', b64);
+      renderCreatorPhoto(b64);
+      showToast('Creator photo saved! ✅');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearCreatorPhoto() {
+    store.set('creator_photo', null);
+    renderCreatorPhoto(null);
+    document.getElementById('creator-photo-file').value = '';
+    showToast('Photo removed');
+  }
+
+  function renderCreatorPhoto(b64) {
+    // Admin preview
+    const adminPrev = document.getElementById('admin-creator-preview');
+    if(adminPrev) {
+      adminPrev.innerHTML = b64
+        ? `<img src="${b64}" style="width:100%;height:100%;object-fit:cover;" />`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`;
+    }
+    // Landing page about section
+    const placeholder = document.getElementById('creator-photo-placeholder');
+    const img = document.getElementById('creator-photo-img');
+    if(placeholder && img) {
+      if(b64) {
+        placeholder.style.display = 'none';
+        img.src = b64; img.style.display = 'block';
+      } else {
+        placeholder.style.display = 'flex';
+        img.style.display = 'none'; img.src = '';
+      }
+    }
+  }
+
+  // ---- INIT (handled in showWelcomePopup block above) ----
+
+  // ---- TOAST ----
+  function showToast(msg, type='success') {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.className = 'toast show' + (type==='success'?' success':'');
+    setTimeout(() => t.className = 'toast', 3000);
+  }
+
+  // ---- MODAL ----
+  function openModal(id) {
+    const el = document.getElementById(id);
+    el.classList.add('active');
+    el.style.display = 'flex';
+  }
+  function closeModal(id) {
+    const el = document.getElementById(id);
+    el.classList.remove('active');
+    el.style.display = 'none';
+    if(id==='free-modal') {
+      document.getElementById('sub-success').classList.remove('show');
+      document.getElementById('sub-name').value='';
+      document.getElementById('sub-email').value='';
+      document.getElementById('sub-btn').disabled=false;
+      document.getElementById('sub-btn').style.display='';
+      document.getElementById('sub-btn').innerHTML='⬇️ Download Now';
+    }
+    if(id==='add-ebook-modal') {
+      document.getElementById('ebook-title').value='';
+      document.getElementById('ebook-desc').value='';
+      document.getElementById('ebook-link').value='';
+      document.getElementById('ebook-price').value='';
+    }
+  }
+
+  // ---- FREE EBOOK SUBSCRIBE ----
+  let currentEbook = null;
+  function openFreeModal(ebook) {
+    currentEbook = ebook;
+    document.getElementById('modal-ebook-name').textContent = '"'+ebook.title+'"';
+    openModal('free-modal');
+  }
+
+  function submitSubscription() {
+    const name  = document.getElementById('sub-name').value.trim();
+    const email = document.getElementById('sub-email').value.trim();
+    if(!name || !email) { showToast('Please fill in all fields', 'error'); return; }
+    if(!email.includes('@')) { showToast('Please enter a valid email', 'error'); return; }
+    const btn = document.getElementById('sub-btn');
+    btn.disabled = true;
+    btn.innerHTML = '⏳ Opening...';
+    setTimeout(() => {
+      // Save subscriber
+      const subs = store.get('subscribers') || [];
+      subs.push({ name, email, ebook: currentEbook?.title || '', date: new Date().toLocaleDateString() });
+      store.set('subscribers', subs);
+      updateAdminStats();
+      document.getElementById('sub-success').classList.add('show');
+      btn.style.display = 'none';
+      // Auto-open the Google Drive link
+      if(currentEbook?.link) {
+        window.open(currentEbook.link, '_blank');
+      }
+      showToast('✅ Download started!');
+      setTimeout(() => closeModal('free-modal'), 2500);
+    }, 800);
+  }
+
+  // ---- NEWSLETTER ----
+  function subscribeNewsletter() {
+    const email = document.getElementById('newsletter-email').value.trim();
+    if(!email || !email.includes('@')) { showToast('Enter a valid email', 'error'); return; }
+    const news = store.get('newsletter') || [];
+    news.push({ email, date: new Date().toLocaleDateString() });
+    store.set('newsletter', news);
+    document.getElementById('newsletter-success').classList.add('show');
+    document.getElementById('newsletter-email').value = '';
+    showToast('Subscribed successfully!');
+    updateAdminStats();
+  }
+
+  // ---- ADMIN LOGIN ----
+  function showAdminLogin(e) {
+    e.preventDefault();
+    document.getElementById('admin-login').classList.add('active');
+    setTimeout(() => document.getElementById('admin-password').focus(), 100);
+  }
+  function closeAdminLogin() {
+    document.getElementById('admin-login').classList.remove('active');
+    document.getElementById('admin-password').value = '';
+    document.getElementById('login-error').classList.remove('show');
+  }
+  function doLogin() {
+    const pass = document.getElementById('admin-password').value;
+    if(pass === ADMIN_PASS) {
+      document.getElementById('admin-login').classList.remove('active');
+      document.getElementById('admin-password').value = '';
+      openAdminDashboard();
+    } else {
+      document.getElementById('login-error').classList.add('show');
+    }
+  }
+  function adminLogout() {
+    document.getElementById('admin-dashboard').classList.remove('active');
+  }
+  function openAdminDashboard() {
+    document.getElementById('admin-dashboard').classList.add('active');
+    loadConfig();
+    renderAdminLists();
+    updateAdminStats();
+    renderCreatorPhoto(store.get('creator_photo'));
+  }
+
+  // ---- CONFIG ----
+  function loadConfig() {
+    const cfg = store.get('config') || {};
+    document.getElementById('cfg-whatsapp').value = cfg.whatsapp || '';
+    document.getElementById('cfg-email').value = cfg.email || '';
+    document.getElementById('cfg-supabase-url').value = cfg.supabaseUrl || '';
+    document.getElementById('cfg-resend-key').value = cfg.resendKey || '';
+  }
+  function saveConfig() {
+    const cfg = {
+      whatsapp: document.getElementById('cfg-whatsapp').value.trim(),
+      email: document.getElementById('cfg-email').value.trim(),
+      supabaseUrl: document.getElementById('cfg-supabase-url').value.trim(),
+      resendKey: document.getElementById('cfg-resend-key').value.trim(),
+    };
+    store.set('config', cfg);
+    renderContactSection();
+    showToast('Configuration saved!');
+  }
+
+  // ---- EBOOKS ----
+  // ---- COVER IMAGE UPLOAD ----
+  function handleCoverUpload(input) {
+    const file = input.files[0];
+    if(!file) return;
+    if(file.size > 2 * 1024 * 1024) {
+      showToast('Image too large — max 2MB', 'error');
+      input.value = ''; return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target.result;
+      document.getElementById('ebook-cover').value = base64;
+      document.getElementById('ebook-cover-img').src = base64;
+      document.getElementById('ebook-cover-preview').style.display = 'block';
+      document.getElementById('upload-label').textContent = '✓ ' + file.name;
+      document.getElementById('cover-upload-box').style.borderColor = 'var(--primary)';
+      document.getElementById('cover-upload-box').style.background = 'var(--primary-pale)';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearCoverImage() {
+    document.getElementById('ebook-cover').value = '';
+    document.getElementById('ebook-cover-img').src = '';
+    document.getElementById('ebook-cover-preview').style.display = 'none';
+    document.getElementById('ebook-cover-file').value = '';
+    document.getElementById('upload-label').textContent = 'Click to upload cover image';
+    document.getElementById('cover-upload-box').style.borderColor = '';
+    document.getElementById('cover-upload-box').style.background = '';
+  }
+
+  function previewCover(base64) {
+    const preview = document.getElementById('ebook-cover-preview');
+    const img = document.getElementById('ebook-cover-img');
+    if(base64) {
+      img.src = base64;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+  }
+
+  function openAddEbook(type) {
+    document.getElementById('edit-ebook-id').value = '';
+    document.getElementById('add-modal-title').textContent = type==='free' ? 'Add Free Ebook' : 'Add Paid Ebook';
+    document.getElementById('save-ebook-btn').textContent = type==='free' ? 'Add Free Ebook' : 'Add Paid Ebook';
+    document.getElementById('add-ebook-type').value = type;
+    document.getElementById('ebook-title').value = '';
+    document.getElementById('ebook-desc').value = '';
+    document.getElementById('ebook-cover').value = '';
+    document.getElementById('ebook-link').value = '';
+    document.getElementById('ebook-price').value = '';
+    document.getElementById('desc-counter').textContent = '0 / 120';
+    document.getElementById('desc-counter').style.color = 'var(--muted)';
+    clearCoverImage();
+    document.getElementById('ebook-link-group').style.display = type==='free' ? 'block' : 'none';
+    document.getElementById('ebook-price-group').style.display = type==='paid' ? 'block' : 'none';
+    const el = document.getElementById('add-ebook-modal');
+    el.style.display = 'flex'; el.classList.add('active');
+  }
+
+  function openEditEbook(type, id) {
+    const key = type==='free' ? 'free_ebooks' : 'paid_ebooks';
+    const ebook = (store.get(key)||[]).find(e => e.id === id);
+    if(!ebook) return;
+    document.getElementById('edit-ebook-id').value = id;
+    document.getElementById('add-ebook-type').value = type;
+    document.getElementById('add-modal-title').textContent = type==='free' ? 'Edit Free Ebook' : 'Edit Paid Ebook';
+    document.getElementById('save-ebook-btn').textContent = 'Save Changes';
+    document.getElementById('ebook-title').value = ebook.title || '';
+    document.getElementById('ebook-desc').value = ebook.desc || '';
+    updateDescCounter(document.getElementById('ebook-desc'));
+    document.getElementById('ebook-cover').value = ebook.cover || '';
+    document.getElementById('ebook-link').value = ebook.link || '';
+    document.getElementById('ebook-price').value = ebook.price || '';
+    document.getElementById('ebook-link-group').style.display = type==='free' ? 'block' : 'none';
+    document.getElementById('ebook-price-group').style.display = type==='paid' ? 'block' : 'none';
+    // Restore cover preview
+    if(ebook.cover) {
+      document.getElementById('ebook-cover-img').src = ebook.cover;
+      document.getElementById('ebook-cover-preview').style.display = 'block';
+      document.getElementById('upload-label').textContent = '✓ Cover image loaded';
+      document.getElementById('cover-upload-box').style.borderColor = 'var(--primary)';
+      document.getElementById('cover-upload-box').style.background = 'var(--primary-pale)';
+    } else {
+      clearCoverImage();
+    }
+    const el = document.getElementById('add-ebook-modal');
+    el.style.display = 'flex'; el.classList.add('active');
+  }
+
+  function saveEbook() {
+    const type   = document.getElementById('add-ebook-type').value;
+    const editId = document.getElementById('edit-ebook-id').value;
+    const title  = document.getElementById('ebook-title').value.trim();
+    const desc   = document.getElementById('ebook-desc').value.trim();
+    const cover  = document.getElementById('ebook-cover').value.trim();
+    const link   = document.getElementById('ebook-link').value.trim();
+    const price  = document.getElementById('ebook-price').value.trim();
+    if(!title || !desc) { showToast('Please fill in title and description', 'error'); return; }
+    if(type==='free' && !link) { showToast('Please add the Google Drive link', 'error'); return; }
+    if(type==='paid' && !price) { showToast('Please add a price', 'error'); return; }
+    const key  = type==='free' ? 'free_ebooks' : 'paid_ebooks';
+    const list = store.get(key) || [];
+    if(editId) {
+      const idx = list.findIndex(e => e.id === Number(editId));
+      if(idx > -1) list[idx] = { ...list[idx], title, desc, cover, link, price };
+      showToast('Ebook updated! ✅');
+    } else {
+      list.push({ id: Date.now(), title, desc, cover, link, price, type });
+      showToast('Ebook added! ✅');
+    }
+    store.set(key, list);
+    closeModal('add-ebook-modal');
+    renderAdminLists(); renderFreeEbooks(); renderPaidEbooks(); updateAdminStats();
+  }
+
+  function deleteEbook(type, id) {
+    if(!confirm('Delete this ebook?')) return;
+    const key  = type==='free' ? 'free_ebooks' : 'paid_ebooks';
+    const list = (store.get(key)||[]).filter(e => e.id !== id);
+    store.set(key, list);
+    renderAdminLists(); renderFreeEbooks(); renderPaidEbooks(); updateAdminStats();
+    showToast('Ebook removed');
+  }
+
+  function renderAdminLists() {
+    renderAdminEbookList('free');
+    renderAdminEbookList('paid');
+    renderSubscribersTable();
+    renderNewsletterTable();
+  }
+
+  function renderNewsletterTable() {
+    const news = store.get('newsletter') || [];
+    const el = document.getElementById('newsletter-wrap');
+    if(!el) return;
+    if(!news.length) { el.innerHTML = '<div class="admin-empty"><p>No newsletter signups yet.</p></div>'; return; }
+    el.innerHTML = `<table class="subscribers-table">
+      <thead><tr><th>Email</th><th>Date</th></tr></thead>
+      <tbody>${news.map(n=>`<tr><td>${n.email}</td><td>${n.date}</td></tr>`).join('')}</tbody>
+    </table>`;
+  }
+
+  function renderAdminEbookList(type) {
+    const key  = type==='free' ? 'free_ebooks' : 'paid_ebooks';
+    const list = store.get(key) || [];
+    const el   = document.getElementById('admin-'+type+'-list');
+    if(!list.length) { el.innerHTML = '<div class="admin-empty"><p>No '+type+' ebooks added yet.</p></div>'; return; }
+    el.innerHTML = list.map(e => `
+      <div class="admin-ebook-item">
+        <div class="admin-ebook-cover" style="${e.cover ? `background:url('${e.cover}') center/cover no-repeat; border:none;` : ''}">
+          ${!e.cover ? `<svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>` : ''}
+        </div>
+        <div class="admin-ebook-info">
+          <div class="admin-ebook-name">${e.title}</div>
+          <div class="admin-ebook-meta">
+            ${type==='paid' ? '₦'+Number(e.price).toLocaleString() : e.link ? '✓ Link set' : '⚠ No link'}
+            &nbsp;·&nbsp; ${e.cover ? '✓ Cover image' : 'No cover'}
+          </div>
+        </div>
+        <div class="admin-ebook-actions">
+          <button class="icon-btn" onclick="openEditEbook('${type}',${e.id})" title="Edit">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button class="icon-btn del" onclick="deleteEbook('${type}',${e.id})" title="Delete">
+            <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+          </button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderSubscribersTable() {
+    const subs = store.get('subscribers') || [];
+    const el = document.getElementById('subscribers-wrap');
+    if(!subs.length) {
+      el.innerHTML = '<div class="admin-empty"><p>No subscribers yet.</p></div>'; return;
+    }
+    el.innerHTML = `<table class="subscribers-table">
+      <thead><tr><th>Name</th><th>Email</th><th>Ebook</th><th>Date</th><th>Type</th></tr></thead>
+      <tbody>${subs.map(s=>`
+        <tr>
+          <td>${s.name}</td>
+          <td>${s.email}</td>
+          <td>${s.ebook||'—'}</td>
+          <td>${s.date}</td>
+          <td><span class="sub-badge sub-free">Free</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`;
+  }
+
+  function updateAdminStats() {
+    document.getElementById('stat-subs').textContent = (store.get('subscribers')||[]).length;
+    document.getElementById('stat-free').textContent = (store.get('free_ebooks')||[]).length;
+    document.getElementById('stat-paid').textContent = (store.get('paid_ebooks')||[]).length;
+    document.getElementById('stat-news').textContent = (store.get('newsletter')||[]).length;
+  }
+
+  // ---- RENDER LANDING PAGE EBOOKS ----
+  function renderFreeEbooks() {
+    const list = store.get('free_ebooks') || [];
+    const grid = document.getElementById('free-ebooks-grid');
+    if(!list.length) {
+      grid.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <h3>Free ebooks coming soon</h3><p>Check back soon for free health guides</p>
+      </div>`; return;
+    }
+    grid.innerHTML = list.map(e => `
+      <div class="ebook-card">
+        <div class="ebook-cover" style="${e.cover ? `background:url('${e.cover}') center/cover no-repeat; background-color:var(--primary-pale);` : 'background:var(--primary-pale);'}">
+          ${!e.cover ? `<svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>` : ''}
+          <div class="ebook-type-badge free-badge">FREE</div>
+        </div>
+        <div class="ebook-body">
+          <div class="ebook-title">${e.title}</div>
+          <div class="ebook-desc">${e.desc}</div>
+          <div class="ebook-footer">
+            <div class="ebook-price">Free</div>
+            <button class="ebook-btn ebook-btn-free" onclick="openFreeModal(${JSON.stringify(e).replace(/"/g,'&quot;')})">Get Free Copy</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderPaidEbooks() {
+    const list = store.get('paid_ebooks') || [];
+    const cfg  = store.get('config') || {};
+    const wa   = cfg.whatsapp || '+2340000000000';
+    const grid = document.getElementById('paid-ebooks-grid');
+    if(!list.length) {
+      grid.innerHTML = `<div class="empty-state">
+        <svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <h3>Premium guides coming soon</h3><p>Exclusive premium health guides will be available here</p>
+      </div>`; return;
+    }
+    grid.innerHTML = list.map(e => {
+      const msg    = encodeURIComponent(`Hi, I'm interested in buying "${e.title}" priced at ₦${Number(e.price).toLocaleString()}. Please guide me on how to pay.`);
+      const waLink = `https://wa.me/${wa.replace(/[^0-9]/g,'')}?text=${msg}`;
+      return `
+      <div class="ebook-card">
+        <div class="ebook-cover" style="${e.cover ? `background:url('${e.cover}') center/cover no-repeat; background-color:var(--accent-light);` : 'background:var(--accent-light);'}">
+          ${!e.cover ? `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>` : ''}
+          <div class="ebook-type-badge paid-badge">PREMIUM</div>
+        </div>
+        <div class="ebook-body">
+          <div class="ebook-title">${e.title}</div>
+          <div class="ebook-desc">${e.desc}</div>
+          <div class="ebook-footer">
+            <div class="ebook-price">₦${Number(e.price).toLocaleString()}</div>
+            <a href="${waLink}" target="_blank" class="ebook-btn ebook-btn-paid">Buy via WhatsApp</a>
+          </div>
+        </div>
+      </div>`; }).join('');
+  }
+
+  // ---- EXPORT CSV ----
+  function exportCSV() {
+    const subs = store.get('subscribers') || [];
+    if(!subs.length) { showToast('No subscribers to export', 'error'); return; }
+    const rows = [['Name','Email','Ebook','Date'],...subs.map(s=>[s.name,s.email,s.ebook,s.date])];
+    const csv = rows.map(r=>r.join(',')).join('\n');
+    const blob = new Blob([csv],{type:'text/csv'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download='subscribers.csv'; a.click();
+    URL.revokeObjectURL(url);
+    showToast('Exported!');
+  }
+
+  // ---- RENDER CONTACT SECTION ----
+  function renderContactSection() {
+    const cfg = store.get('config') || {};
+    const wa = cfg.whatsapp || '';
+    const email = cfg.email || '';
+
+    // WhatsApp
+    const waNumEl = document.getElementById('contact-wa-number');
+    const waBtnWrap = document.getElementById('contact-wa-btn-wrap');
+    if(wa) {
+      waNumEl.textContent = wa;
+      waBtnWrap.innerHTML = `<a href="https://wa.me/${wa.replace(/[^0-9]/g,'')}" target="_blank" class="contact-link-btn wa-btn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+        Chat on WhatsApp
+      </a>`;
+    } else {
+      waNumEl.textContent = 'Not configured yet';
+      waBtnWrap.innerHTML = `<span class="contact-placeholder"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> WhatsApp number will appear once configured</span>`;
+    }
+
+    // Email
+    const emailValEl = document.getElementById('contact-email-value');
+    const emailBtnWrap = document.getElementById('contact-email-btn-wrap');
+    if(email) {
+      emailValEl.textContent = email;
+      emailBtnWrap.innerHTML = `<a href="mailto:${email}" class="contact-link-btn em-btn">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="white" stroke-width="2.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Send an Email
+      </a>`;
+    } else {
+      emailValEl.textContent = 'Not configured yet';
+      emailBtnWrap.innerHTML = `<span class="contact-placeholder"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg> Email will appear once configured</span>`;
+    }
+  }
+
+  // ---- WELCOME POPUP ----
+  function showWelcomePopup() {
+    // Reset to step 1 every time
+    document.getElementById('wp-step1').style.display = 'block';
+    document.getElementById('wp-step2').style.display = 'none';
+    document.getElementById('wp-name').value = '';
+    document.getElementById('wp-email').value = '';
+    document.getElementById('wp-name').style.borderColor = '';
+    document.getElementById('wp-email').style.borderColor = '';
+    const btn = document.getElementById('wp-btn');
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2.5"><path d="M13 5l7 7-7 7M5 12h15"/></svg> Show Me The Free Ebooks';
+    setTimeout(() => {
+      document.getElementById('welcome-popup').classList.add('active');
+    }, 1800);
+  }
+
+  function closeWelcomePopup() {
+    document.getElementById('welcome-popup').classList.remove('active');
+  }
+
+  function submitWelcomeForm() {
+    const name = document.getElementById('wp-name').value.trim();
+    const email = document.getElementById('wp-email').value.trim();
+    if(!name) {
+      const el = document.getElementById('wp-name');
+      el.style.borderColor='#ef4444'; el.focus(); return;
+    }
+    if(!email || !email.includes('@')) {
+      const el = document.getElementById('wp-email');
+      el.style.borderColor='#ef4444'; el.focus(); return;
+    }
+    const btn = document.getElementById('wp-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Loading...';
+
+    setTimeout(() => {
+      // Save subscriber
+      const subs = store.get('subscribers') || [];
+      const alreadyExists = subs.find(s => s.email === email);
+      if(!alreadyExists) {
+        subs.push({ name, email, ebook: 'Popup Signup', date: new Date().toLocaleDateString() });
+        store.set('subscribers', subs);
+        updateAdminStats();
+      }
+
+      // Build ebook list for step 2
+      const freeEbooks = store.get('free_ebooks') || [];
+      const listEl = document.getElementById('wp-ebook-list');
+      const noEl = document.getElementById('wp-no-ebooks');
+
+      if(freeEbooks.length === 0) {
+        listEl.style.display = 'none';
+        noEl.style.display = 'block';
+      } else {
+        noEl.style.display = 'none';
+        listEl.innerHTML = freeEbooks.map(e => `
+          <a href="${e.link}" target="_blank" class="wp-ebook-item">
+            <div class="wp-ebook-item-icon" style="${e.cover ? `background:url('${e.cover}') center/cover no-repeat; border:none;` : ''}">
+              ${!e.cover ? `<svg viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>` : ''}
+            </div>
+            <div class="wp-ebook-item-info">
+              <div class="wp-ebook-item-title">${e.title}</div>
+              <div class="wp-ebook-item-desc">${e.desc}</div>
+            </div>
+            <div class="wp-ebook-item-arrow">→</div>
+          </a>
+        `).join('');
+      }
+
+      // Switch to step 2
+      document.getElementById('wp-step1').style.display = 'none';
+      document.getElementById('wp-step2').style.display = 'block';
+    }, 900);
+  }
+
+  // Trigger popup on load
+  window.addEventListener('DOMContentLoaded', () => {
+    loadConfig();
+    renderFreeEbooks();
+    renderPaidEbooks();
+    renderContactSection();
+    renderCreatorPhoto(store.get('creator_photo'));
+    loadYouTubeVideos();
+    showWelcomePopup();
+  });
+
+  // ---- YOUTUBE VIDEOS ----
+  async function loadYouTubeVideos() {
+    const CHANNEL_ID = 'UCi5Q9YNkphYHv2T0XLnvfkA'; // Chinonyereme Uphemia's channel ID
+    const RSS_URL = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+    const PROXY = `https://api.allorigins.win/get?url=${encodeURIComponent(RSS_URL)}`;
+    const grid = document.getElementById('yt-videos-grid');
+
+    try {
+      const res  = await fetch(PROXY);
+      const data = await res.json();
+      const xml  = new DOMParser().parseFromString(data.contents, 'text/xml');
+      const entries = Array.from(xml.querySelectorAll('entry')).slice(0, 3);
+
+      if(!entries.length) throw new Error('No videos found');
+
+      grid.innerHTML = entries.map(entry => {
+        const videoId  = entry.querySelector('videoId')?.textContent || entry.querySelector('id')?.textContent?.split(':').pop() || '';
+        const title    = entry.querySelector('title')?.textContent || 'Untitled';
+        const pubDate  = entry.querySelector('published')?.textContent || '';
+        const thumb    = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+        const url      = `https://www.youtube.com/watch?v=${videoId}`;
+        const dateStr  = pubDate ? new Date(pubDate).toLocaleDateString('en-NG', { day:'numeric', month:'short', year:'numeric' }) : '';
+
+        return `
+          <a href="${url}" target="_blank" class="yt-card">
+            <div class="yt-thumb">
+              <img src="${thumb}" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/480x270/e6f4f4/0a5c5c?text=Video'" />
+              <div class="yt-play">
+                <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+            </div>
+            <div class="yt-info">
+              <div class="yt-title">${title}</div>
+              <div class="yt-meta">${dateStr}</div>
+            </div>
+          </a>`;
+      }).join('');
+
+    } catch(err) {
+      grid.innerHTML = `
+        <div class="yt-error">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5" width="48" height="48" style="margin-bottom:0.8rem;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p style="margin-bottom:0.5rem;font-size:0.9rem;">Couldn't load videos right now.</p>
+          <a href="https://www.youtube.com/@chinonyeremeuphemia8308" target="_blank">Visit the YouTube channel directly →</a>
+        </div>`;
+    }
+  }
+
+  // Close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(el => {
+    el.addEventListener('click', e => { if(e.target===el) closeModal(el.id); });
+  });
+</script>
+</body>
+</html>
