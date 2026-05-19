@@ -3,17 +3,12 @@ import { verifyPassword, generateToken, setAdminCookie, clearAdminCookie } from 
 import { adminLoginSchema } from '@/lib/validation'
 import { rateLimit } from '@/lib/rateLimit'
 
-// POST — login
 export async function POST(req: NextRequest) {
   try {
-    // Strict rate limiting for login — 5 attempts per 15 minutes
     const ip = req.headers.get('x-forwarded-for') ?? 'unknown'
     const { allowed } = rateLimit(`admin-login:${ip}`, 5, 900_000)
     if (!allowed) {
-      return NextResponse.json(
-        { error: 'Too many login attempts. Please wait 15 minutes.' },
-        { status: 429 }
-      )
+      return NextResponse.json({ error: 'Too many login attempts. Please wait 15 minutes.' }, { status: 429 })
     }
 
     const body = await req.json()
@@ -24,16 +19,14 @@ export async function POST(req: NextRequest) {
 
     const { password } = parsed.data
     const hash = process.env.ADMIN_PASSWORD_HASH!
-
     const valid = await verifyPassword(password, hash)
+
     if (!valid) {
-      // Generic error — don't reveal if password or username was wrong
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 })
     }
 
     const token = generateToken()
-    setAdminCookie(token)
-
+    await setAdminCookie(token)
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Login error:', error)
@@ -41,8 +34,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// DELETE — logout
 export async function DELETE() {
-  clearAdminCookie()
+  await clearAdminCookie()
   return NextResponse.json({ success: true })
 }
