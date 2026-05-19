@@ -745,6 +745,14 @@
     color: rgba(255,255,255,0.85); font-size: 0.78rem; font-weight: 500;
   }
   .wp-perk svg { width: 14px; height: 14px; stroke: #c8e8b8; fill: none; stroke-width: 2.5; flex-shrink: 0; }
+  @keyframes perkIn {
+    from { opacity: 0; transform: translateY(10px) scale(0.92); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .wp-perk-anim {
+    opacity: 0;
+    animation: perkIn 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
   .wp-bottom {
     background: white; padding: 2rem 2.5rem 2.5rem;
   }
@@ -1501,9 +1509,9 @@
         <h2 class="wp-headline">Get Your <span>Free</span><br/>Health Ebook Today</h2>
         <p class="wp-sub">Join thousands of Nigerians taking charge of their health with evidence-based medical guides — completely free.</p>
         <div class="wp-perks">
-          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Instant access</div>
-          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Expert-reviewed</div>
-          <div class="wp-perk"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>100% Free</div>
+          <div class="wp-perk wp-perk-anim" style="animation-delay:0.1s"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Instant access</div>
+          <div class="wp-perk wp-perk-anim" style="animation-delay:0.25s"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Expert-reviewed</div>
+          <div class="wp-perk wp-perk-anim" style="animation-delay:0.4s"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>100% Free</div>
         </div>
       </div>
       <div class="wp-bottom">
@@ -1514,7 +1522,7 @@
         </div>
         <button class="wp-submit" id="wp-btn" onclick="submitWelcomeForm()">
           <svg viewBox="0 0 24 24"><path d="M13 5l7 7-7 7M5 12h15"/></svg>
-          Show Me The Free Ebooks
+          🎁 Claim My Free Ebook Now
         </button>
         <div class="wp-privacy">
           <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
@@ -2073,7 +2081,7 @@
     document.getElementById('wp-email').style.borderColor = '';
     const btn = document.getElementById('wp-btn');
     btn.disabled = false;
-    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2.5"><path d="M13 5l7 7-7 7M5 12h15"/></svg> Show Me The Free Ebooks';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2.5"><path d="M13 5l7 7-7 7M5 12h15"/></svg> 🎁 Claim My Free Ebook Now';
     setTimeout(() => {
       document.getElementById('welcome-popup').classList.add('active');
     }, 1800);
