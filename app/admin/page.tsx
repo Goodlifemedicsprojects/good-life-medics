@@ -1,5 +1,5 @@
 'use client'
-import { useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { Ebook, Subscriber, NewsletterSignup, SiteConfig } from '@/types'
 
 export default function AdminPage() {
@@ -666,15 +666,15 @@ function EbookList({ ebooks, onEdit, onDelete }: { ebooks: Ebook[], onEdit: (e: 
 
 // ---- YOUTUBE VIDEO MANAGER ----
 function YoutubeVideoManager({ showToast }: { showToast: (msg: string) => void }) {
-  const [videos, setVideos] = useState<any[]>([])
-  const [url, setUrl] = useState('')
-  const [desc, setDesc] = useState('')
-  const [fetching, setFetching] = useState(false)
-  const [preview, setPreview] = useState<any>(null)
-  const [fetchError, setFetchError] = useState('')
-  const [saving, setSaving] = useState(false)
+  const [videos, setVideos] = React.useState<any[]>([])
+  const [url, setUrl] = React.useState('')
+  const [desc, setDesc] = React.useState('')
+  const [fetching, setFetching] = React.useState(false)
+  const [preview, setPreview] = React.useState<any>(null)
+  const [fetchError, setFetchError] = React.useState('')
+  const [saving, setSaving] = React.useState(false)
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetch('/api/youtube-videos').then(r => r.json()).then(d => { if (d.data) setVideos(d.data) })
   }, [])
 
